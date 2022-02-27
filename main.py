@@ -6,6 +6,37 @@ class Resistor:
         self.resistance = resistance
         self.components = components
 
+    def __eq__(self, other):
+        return self.resistance == other.resistance
+
+    def __str__(self):
+        return self.components
+
+
+def series(r1: Resistor, r2: Resistor) -> Resistor:
+    resistance = r1.resistance + r2.resistance
+    components = '(' + r1.components + ' + ' + r2.components + ')'
+    return Resistor(resistance, components)
+
+
+def parallel(r1: Resistor, r2: Resistor) -> Resistor:
+    resistance = (r1.resistance * r2.resistance)/(r1.resistance + r2.resistance)
+    components = '(' + r1.components + ' || ' + r2.components + ')'
+    return Resistor(resistance, components)
+
+
+# Finds the closest resistance achievable with a combination of two resistors from the input lists
+def find_closest(r1_list, r2_list):
+    closest = series(r1_list[0], r2_list[0])
+    global rTarget
+    for r1 in r1_list:
+        for r2 in r2_list:
+            if abs(series(r1, r2).resistance - rTarget) < abs(closest.resistance - rTarget):
+                closest = series(r1, r2)
+            if abs(parallel(r1, r2).resistance - rTarget) < abs(closest.resistance - rTarget):
+                closest = parallel(r1, r2)
+    return closest
+
 
 # Read the resistor values into an array from the input file
 with open('resistors.txt') as resistorFile:
@@ -13,62 +44,38 @@ with open('resistors.txt') as resistorFile:
 
     for line in resistorFile:
         singleResistors.append(Resistor(float(line), line.strip('\n')))
-# print(singleResistors)
-#
-#
-# # rTarget = sys.argv[0]
-# rTarget = 50
-# # rCount = sys.argv[1]
-# rCount = 2
-# rClosest = []
-#
-#
-# def series(r1: float, r2: float) -> float:
-#     return r1 + r2
-#
-#
-# def parallel(r1: float, r2: float) -> float:
-#     return (r1 * r2)/(r1 + r2)
-#
-#
-# def find_closest(r1_list, r2_list):
-#     closest = [series(r1_list[0], r2_list[0]), str(r1_list[0]) + ' + ' + str(r2_list)]
-#     global rTarget
-#     for i in range(len(r1_list)):
-#         for j in range(len(r2_list)):
-#             r1 = r1_list[1][i]
-#             r2 = r2_list[1][j]
-#             if (series(r1, r2) - rTarget) < (int(closest[0]) - rTarget):
-#                 closest[0] = series(r1, r2)
-#                 closest[1] = '(' + str(r1) + ' + ' + str(r2) + ')'
-#             if (parallel(r1, r2) - rTarget) < (closest[0] - rTarget):
-#                 closest[0] = parallel(r1, r2)
-#                 closest[1] = '(' + str(r1) + ' || ' + str(r2) + ')'
-#     return result
-#
-#
-# # finds the closest combination of resistors using recursion
-# # takes two array arguments containing the possibilities for each resistor
-# def combine(combo_resistors = singleResistors) :
-#     global rCount
-#     global rTarget
-#     if rCount == 2:
-#         return find_closest(singleResistors, combo_resistors)
-#     else:
-#         new_combos = []
-#         for i in range(len(singleResistors)):
-#             for j in range(len(combo_resistors)):
-#                 r1 = singleResistors[i][1]
-#                 r2 = combo_resistors[j][1]
-#                 if series(r1, r2) not in singleResistors:
-#                     new_combos.append([series(r1, r2), '(' + str(r1) + ' + ' + str(r2) + ')'])
-#                 if parallel(r1, r2) not in new_combos:
-#                     new_combos.append([parallel(r1, r2), '(' + str(r1) + ' || ' + str(r2) + ')'])
-#         rCount -= 1
-#         combine(new_combos)
-#
-#
-# # output
-# result = combine()
-# print('best combination: ' + str(result[1]))
-# print('total resistance: ' + str(result[0]))
+
+
+rTarget = float(sys.argv[1])
+rCount = int(sys.argv[2])
+rClosest = Resistor(0, '0')
+
+
+# finds the closest combination of resistors using recursion
+# takes two array arguments containing the possibilities for each resistor
+def combine(combo_resistors=singleResistors):
+    global rCount
+    global rTarget
+    global rClosest
+    rClosest = find_closest(singleResistors, combo_resistors)
+
+    if rCount == 2:
+        return
+    elif rClosest.resistance == rTarget:
+        return
+    else:
+        new_combos = []
+        for r1 in singleResistors:
+            for r2 in combo_resistors:
+                if series(r1, r2) not in singleResistors:
+                    new_combos.append(series(r1, r2))
+                if parallel(r1, r2) not in new_combos:
+                    new_combos.append(parallel(r1, r2))
+        rCount -= 1
+        combine(new_combos)
+
+
+# output
+combine()
+print('best combination: ' + str(rClosest))
+print('total resistance: ' + str(rClosest.resistance))
