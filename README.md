@@ -1,4 +1,5 @@
 (Written February 27th, 2022)
+
 Welcome to the Resistor Assister! 
 
 
@@ -7,7 +8,7 @@ combination of resistors to get as close as possible to any resistance.
 I'm working solo for this hackathon, so the entire project was made from
 scratch by me.
 
-This project uses minimal add-ons the only additional module imported is
+This project uses minimal add-ons. The only additional module imported is
 the sys module to allow for the use of command line arguments
 
 
