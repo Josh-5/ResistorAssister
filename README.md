@@ -12,4 +12,6 @@ This project uses minimal add-ons. The only additional module imported is
 the sys module to allow for the use of command line arguments
 
 When running this program, run main.py with two arguments, the first being
-the target resistance and second being the maximum number of resistors 
+the target resistance and second being the maximum number of resistors. Make
+sure you also replace the resistances in resistors.txt with the values you
+have available
