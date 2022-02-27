@@ -31,6 +31,10 @@ def find_closest(r1_list, r2_list):
     global rTarget
     for r1 in r1_list:
         for r2 in r2_list:
+            if abs(r1.resistance - rTarget) < abs(closest.resistance - rTarget):
+                closest = r1
+            if abs(r2.resistance - rTarget) < abs(closest.resistance - rTarget):
+                closest = r2
             if abs(series(r1, r2).resistance - rTarget) < abs(closest.resistance - rTarget):
                 closest = series(r1, r2)
             if abs(parallel(r1, r2).resistance - rTarget) < abs(closest.resistance - rTarget):
