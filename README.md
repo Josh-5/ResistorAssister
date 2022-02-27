@@ -1,4 +1,4 @@
-(Written February 27th, 2022)
+(Written February 27th, 2022 by Joshua Pryor)
 
 Welcome to the Resistor Assister! 
 
@@ -14,9 +14,13 @@ the sys module to allow for the use of command line arguments
 
 How to run:
 
-	1- navigate to the folder containing this file in your command line
+	0) if you want to replace or modify the list of available resistors, use
+	   resistors.txt. Each line should contain one resistance value with no
+	   letters, commas, or spaces.
 	
-	2- run main.py with two command line arguments. The first argument
+	1) navigate to the folder containing this file in your command line
+	
+	2) run main.py from the command line with two arguments. The first
 	   is your desired resistance, and the second is the maximum number
 	   of resistors you want to use to achieve it. The output will tell you
-	   the best combination as well as the total resistance of that combination
+	   the best combination as well as the total resistance of that combination.
