@@ -80,6 +80,11 @@ def combine(combo_resistors=singleResistors):
 
 
 # output
-combine()
+if rCount != 1:
+    combine()
+else:
+    for r in singleResistors:
+        if abs(r.resistance - rTarget) < abs(rClosest.resistance - rTarget):
+            rClosest = r
 print('best combination: ' + str(rClosest))
 print('total resistance: ' + str(rClosest.resistance))
